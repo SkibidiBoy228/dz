@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лотерея 6 з 42</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        .ball-container {
+            margin-top: 40px;
+        }
+
+        .ball {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
+            height: 70px;
+            margin: 10px;
+            background-color: orange;
+            border-radius: 50%;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 10px #aaa;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Лотерея 6 з 42</h1>
+<p>Онови сторінку, щоб отримати нові числа</p>
+
+<div class="ball-container">
+    {% for n in numbers %}
+        <div class="ball">{{ n }}</div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
