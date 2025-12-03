@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 import random
+from django.utils import timezone
 
 
 # технічно представлення - це функції, які приймають
@@ -27,9 +28,10 @@ def privacy(request):
 
 
 def lottery(request):
-    numbers = random.sample(range(1, 43), 6) 
-    numbers.sort()
+    number = random.randint(1, 100)
+    load_time = timezone.now()
 
     return render(request, 'lottery.html', {
-        'numbers': numbers
+        'number': number,
+        'load_time': load_time
     })

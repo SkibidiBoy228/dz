@@ -35,11 +35,16 @@
 <h1>Лотерея 6 з 42</h1>
 <p>Онови сторінку, щоб отримати нові числа</p>
 
-<div class="ball-container">
-    {% for n in numbers %}
-        <div class="ball">{{ n }}</div>
-    {% endfor %}
-</div>
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Лотерея</h2>
+    <p>Ваше число: {{ number }}</p>
+{% endblock %}
+
+{% block footer %}
+    <p>Сторінка завантажена о: {{ load_time }}</p>
+{% endblock %}
 
 </body>
 </html>
