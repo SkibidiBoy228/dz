@@ -18,6 +18,7 @@ def home(request):
         <a href='/about'>Про нас</a><br>
         <a href='/privacy'>Політика конфіденційності</a>
         <a href='/lottery'>Лотерея 6 з 42</a>
+         <a href='/statics'>Статичні файли</a>
     """)
 
 def about(request):
@@ -35,3 +36,6 @@ def lottery(request):
         'number': number,
         'load_time': load_time
     })
+
+def statics_page(request):
+    return render(request, "statics.html")
