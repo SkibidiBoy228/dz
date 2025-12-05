@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here.
 from django.http import HttpResponse
@@ -18,7 +20,8 @@ def home(request):
         <a href='/about'>Про нас</a><br>
         <a href='/privacy'>Політика конфіденційності</a>
         <a href='/lottery'>Лотерея 6 з 42</a>
-         <a href='/statics'>Статичні файли</a>
+        <a href='/statics'>Статичні файли</a>
+        <a href='/http-help'>Посилання-підказки</a>
     """)
 
 def about(request):
@@ -39,3 +42,24 @@ def lottery(request):
 
 def statics_page(request):
     return render(request, "statics.html")
+
+@csrf_exempt
+def http_help(request):
+    post_data = None
+
+    if request.method == "POST":
+        post_data = request.POST
+
+    elif request.method in ["PUT", "PATCH"]:
+        body = request.body.decode("utf-8")
+        try:
+            post_data = json.loads(body)
+        except:
+            post_data = body
+
+    elif request.method == "DELETE":
+        post_data = "DELETE запит отримано"
+
+    return render(request, "http_help.html", {
+        "post_data": post_data
+    })

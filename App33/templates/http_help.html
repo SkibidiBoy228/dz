@@ -1,0 +1,52 @@
+<h1>HTTP Підказки (GET, POST, PUT, PATCH, DELETE)</h1>
+
+<h2>GET приклад</h2>
+<a href="/hello/">/hello/</a><br>
+<a href="/about/">/about/</a><br>
+<a href="/lottery/">/lottery/</a><br>
+
+<hr>
+
+<h2>POST приклад</h2>
+<form action="/http-help/" method="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Ваше ім’я">
+    <button type="submit">Надіслати POST</button>
+</form>
+
+{% if post_data %}
+<p><b>Отримано POST:</b> {{ post_data }}</p>
+{% endif %}
+
+<hr>
+
+<h2>PUT приклад</h2>
+<p>PUT неможливо зробити з браузера напряму (forms не підтримують PUT), але можна зробити через JavaScript:</p>
+
+<pre>
+fetch('/http-help/', {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({"action": "update", "value": 123})
+});
+</pre>
+
+<hr>
+
+<h2>PATCH приклад</h2>
+<pre>
+fetch('/http-help/', {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({"field": "name", "value": "NewName"})
+});
+</pre>
+
+<hr>
+
+<h2>DELETE приклад</h2>
+<pre>
+fetch('/http-help/', {
+    method: 'DELETE'
+});
+</pre>
