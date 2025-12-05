@@ -22,6 +22,7 @@ def home(request):
         <a href='/lottery'>Лотерея 6 з 42</a>
         <a href='/statics'>Статичні файли</a>
         <a href='/http-help'>Посилання-підказки</a>
+        <a href='/product/add/'>Форм</a>
     """)
 
 def about(request):
@@ -63,3 +64,17 @@ def http_help(request):
     return render(request, "http_help.html", {
         "post_data": post_data
     })
+
+def product_add(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+
+        return render(request, "product_success.html", {
+            "name": name,
+            "price": price,
+            "description": description,
+        })
+
+    return render(request, "product_form.html")

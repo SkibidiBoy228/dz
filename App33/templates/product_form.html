@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати товар</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+        .container {
+            max-width: 480px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            color: #444;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 5px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 110px;
+            resize: vertical;
+        }
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            background: #4a90e2;
+            color: white;
+            font-size: 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #357abd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Додати товар</h1>
+
+    <form action="/product/add/" method="POST">
+        {% csrf_token %}
+
+        <label>Назва товару:</label>
+        <input type="text" name="name" required>
+
+        <label>Ціна:</label>
+        <input type="number" name="price" required>
+
+        <label>Опис:</label>
+        <textarea name="description"></textarea>
+
+        <button type="submit">Зберегти</button>
+    </form>
+</div>
+
+</body>
+</html>

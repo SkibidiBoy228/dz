@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Успіх</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f5;
+            padding: 40px;
+        }
+        .box {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2c7e43;
+        }
+        p {
+            font-size: 17px;
+            margin: 8px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #4a90e2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        a:hover {
+            background: #357abd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Товар успішно додано!</h1>
+
+    <p><b>Назва:</b> {{ name }}</p>
+    <p><b>Ціна:</b> {{ price }} грн</p>
+    <p><b>Опис:</b> {{ description }}</p>
+
+    <a href="/product/add/">Додати ще один товар</a>
+</div>
+
+</body>
+</html>
