@@ -56,12 +56,24 @@
         button:hover {
             background: #357abd;
         }
+        .error {
+            color: #d12f2f;
+            font-weight: bold;
+            margin-top: 10px;
+            background: #ffe2e2;
+            padding: 10px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Додати товар</h1>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
 
     <form action="/product/add/" method="POST">
         {% csrf_token %}
@@ -74,6 +86,9 @@
 
         <label>Опис:</label>
         <textarea name="description"></textarea>
+
+        <label>Телефон (13 цифр):</label>
+        <input type="text" name="phone" maxlength="13" required>
 
         <button type="submit">Зберегти</button>
     </form>

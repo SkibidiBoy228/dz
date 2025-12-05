@@ -70,11 +70,17 @@ def product_add(request):
         name = request.POST.get("name")
         price = request.POST.get("price")
         description = request.POST.get("description")
-
+        phone = request.POST.get("phone")
+        if len(phone) != 12 or not phone.isdigit():
+            return render(request, "product_form.html", {
+                "error": "Телефон повинен містити рівно 12 цифр!"
+            })
         return render(request, "product_success.html", {
             "name": name,
             "price": price,
             "description": description,
+            "phone": phone,
         })
 
     return render(request, "product_form.html")
+
