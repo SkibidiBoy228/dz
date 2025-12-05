@@ -65,15 +65,17 @@ def http_help(request):
         "post_data": post_data
     })
 
+
+
 def product_add(request):
     if request.method == "POST":
         name = request.POST.get("name")
         price = request.POST.get("price")
         description = request.POST.get("description")
         phone = request.POST.get("phone")
-        if len(phone) != 12 or not phone.isdigit():
+        if len(phone) != 10 or not phone.isdigit():
             return render(request, "product_form.html", {
-                "error": "Телефон повинен містити рівно 12 цифр!"
+                "error": "Телефон повинен містити рівно 10 цифр!"
             })
         return render(request, "product_success.html", {
             "name": name,
