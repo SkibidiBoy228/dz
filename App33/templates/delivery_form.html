@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма доставки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+        .container {
+            max-width: 480px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            color: #444;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 5px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            background: #4a90e2;
+            color: white;
+            font-size: 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .error {
+            color: #d12f2f;
+            font-weight: bold;
+            margin-top: 5px;
+            background: #ffe2e2;
+            padding: 8px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Доставка</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label>Імʼя отримувача:</label>
+        <input type="text" name="first_name" value="{{ form.first_name.value }}" placeholder="Наприклад: Іван">
+        {% if form.first_name.errors %}
+            <div class="error">{{ form.first_name.errors.0 }}</div>
+        {% endif %}
+        <label>Прізвище отримувача:</label>
+        <input type="text" name="last_name" value="{{ form.last_name.value }}" placeholder="Наприклад: Петренко">
+        {% if form.last_name.errors %}
+            <div class="error">{{ form.last_name.errors.0 }}</div>
+        {% endif %}
+        <label>Країна:</label>
+        <input type="text" name="country" value="{{ form.country.value }}" placeholder="Наприклад: Україна">
+        {% if form.country.errors %}
+            <div class="error">{{ form.country.errors.0 }}</div>
+        {% endif %}
+        <label>Область:</label>
+        <input type="text" name="region" value="{{ form.region.value }}" placeholder="Наприклад: Київська">
+        {% if form.region.errors %}
+            <div class="error">{{ form.region.errors.0 }}</div>
+        {% endif %}
+        <label>Місто:</label>
+        <input type="text" name="city" value="{{ form.city.value }}" placeholder="Наприклад: Київ">
+        {% if form.city.errors %}
+            <div class="error">{{ form.city.errors.0 }}</div>
+        {% endif %}
+        <label>Вулиця:</label>
+        <input type="text" name="street" value="{{ form.street.value }}" placeholder="Наприклад: Хрещатик 10">
+        {% if form.street.errors %}
+            <div class="error">{{ form.street.errors.0 }}</div>
+        {% endif %}
+        <label>Поштовий індекс:</label>
+        <input type="text" name="postal_code" value="{{ form.postal_code.value }}" maxlength="10" placeholder="Наприклад: 01001">
+        {% if form.postal_code.errors %}
+            <div class="error">{{ form.postal_code.errors.0 }}</div>
+        {% endif %}
+        <label>Дата доставки:</label>
+        <input type="date" name="delivery_date" value="{{ form.delivery_date.value }}">
+        {% if form.delivery_date.errors %}
+            <div class="error">{{ form.delivery_date.errors.0 }}</div>
+        {% endif %}
+        <label>Час доставки:</label>
+        <input type="time" name="delivery_time" value="{{ form.delivery_time.value }}" min="09:00" max="18:00">
+        {% if form.delivery_time.errors %}
+            <div class="error">{{ form.delivery_time.errors.0 }}</div>
+        {% endif %}
+
+        <button type="submit">Підтвердити</button>
+    </form>
+</div>
+
+</body>
+</html>

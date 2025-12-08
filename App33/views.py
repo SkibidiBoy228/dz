@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from .forms import DeliveryForm
 # Create your views here.
 from django.http import HttpResponse
 import random
@@ -23,6 +23,7 @@ def home(request):
         <a href='/statics'>Статичні файли</a>
         <a href='/http-help'>Посилання-підказки</a>
         <a href='/product/add/'>Форм</a>
+        <a href='/delivery/'>Доставка</a>
     """)
 
 def about(request):
@@ -86,3 +87,14 @@ def product_add(request):
 
     return render(request, "product_form.html")
 
+def delivery(request):
+    if request.method == "POST":
+        form = DeliveryForm(request.POST)
+        if form.is_valid():
+            return render(request, "delivery_success.html", {
+                "data": form.cleaned_data
+            })
+    else:
+        form = DeliveryForm()
+
+    return render(request, "delivery_form.html", {"form": form})

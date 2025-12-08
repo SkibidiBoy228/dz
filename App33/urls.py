@@ -10,5 +10,5 @@ urlpatterns = [
     path('statics/', views.statics_page, name='statics'),
     path('http-help/', views.http_help, name='http_help'),
     path('product/add/', views.product_add, name='product_add'),
-
+    path('delivery/', views.delivery, name='delivery'),
 ]
