@@ -2,7 +2,8 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Додати товар</title>
+    <title>Форма користувача</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,7 +29,7 @@
             display: block;
             color: #444;
         }
-        input, textarea {
+        input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -36,10 +37,6 @@
             margin-top: 5px;
             font-size: 15px;
             box-sizing: border-box;
-        }
-        textarea {
-            height: 110px;
-            resize: vertical;
         }
         button {
             width: 100%;
@@ -59,49 +56,48 @@
         .error {
             color: #d12f2f;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 5px;
             background: #ffe2e2;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
         }
     </style>
+
 </head>
 <body>
 
 <div class="container">
-    <h1>Додати товар</h1>
+    <h1>Дані користувача</h1>
 
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
 
-        <form action="/product/add/" method="POST">
-            {% csrf_token %}
+        <label>Логін:</label>
+        <input type="text" name="login" value="{{ form.login.value }}">
+        {% if form.login.errors %}
+            <div class="error">{{ form.login.errors.0 }}</div>
+        {% endif %}
 
-            <label>Назва товару:</label>
-            <input type="text" name="name" required>
+        <label>Е-пошта:</label>
+        <input type="email" name="email" value="{{ form.email.value }}">
+        {% if form.email.errors %}
+            <div class="error">{{ form.email.errors.0 }}</div>
+        {% endif %}
 
-            <label>Ціна:</label>
-            <input type="number" name="price" required>
+        <label>Телефон:</label>
+        <input type="text" name="phone" value="{{ form.phone.value }}">
+        {% if form.phone.errors %}
+            <div class="error">{{ form.phone.errors.0 }}</div>
+        {% endif %}
 
-            <label>Опис:</label>
-            <textarea name="description"></textarea>
+        <label>Дата народження:</label>
+        <input type="date" name="birth_date" value="{{ form.birth_date.value }}">
+        {% if form.birth_date.errors %}
+            <div class="error">{{ form.birth_date.errors.0 }}</div>
+        {% endif %}
 
-            <label>Логін:</label>
-            <input type="text" name="login" required>
-
-            <label>Е-пошта:</label>
-            <input type="email" name="email" required>
-
-            <label>Дата народження:</label>
-            <input type="date" name="birth_date" required>
-
-            <label>Телефон (10 цифр):</label>
-            <input type="text" name="phone" maxlength="10" required>
-
-            <button type="submit">Зберегти</button>
-        </form>
-
+        <button type="submit">Відправити</button>
+    </form>
 </div>
 
 </body>

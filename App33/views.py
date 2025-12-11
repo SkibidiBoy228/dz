@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .forms import DeliveryForm
+from .forms import UserForm
 # Create your views here.
 from django.http import HttpResponse
 import random
@@ -16,15 +17,65 @@ def hello(request) :
 
 def home(request):
     return HttpResponse("""
-        <h1>Головна сторінка</h1>
-        <a href='/about'>Про нас</a><br>
-        <a href='/privacy'>Політика конфіденційності</a>
-        <a href='/lottery'>Лотерея 6 з 42</a>
-        <a href='/statics'>Статичні файли</a>
-        <a href='/http-help'>Посилання-підказки</a>
-        <a href='/product/add/'>Форм</a>
-        <a href='/delivery/'>Доставка</a>
+        <!DOCTYPE html>
+        <html lang='uk'>
+        <head>
+            <meta charset='UTF-8'>
+            <title>Головна</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background: #f4f6f9;
+                    padding: 40px;
+                }
+                .container {
+                    max-width: 500px;
+                    margin: auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                    text-align: center;
+                }
+                h1 {
+                    margin-bottom: 25px;
+                    color: #333;
+                }
+                a {
+                    display: block;
+                    margin: 10px 0;
+                    padding: 12px;
+                    background: #4a90e2;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-size: 17px;
+                    transition: 0.3s;
+                }
+                a:hover {
+                    background: #357abd;
+                }
+            </style>
+        </head>
+        <body>
+
+            <div class='container'>
+                <h1>Головна сторінка</h1>
+
+                <a href='/about'>Про нас</a>
+                <a href='/privacy'>Політика конфіденційності</a>
+                <a href='/lottery'>Лотерея 6 з 42</a>
+                <a href='/statics'>Статичні файли</a>
+                <a href='/http-help'>Посилання-підказки</a>
+                <a href='/product/add/'>Форма додавання товару</a>
+                <a href='/delivery/'>Доставка</a>
+                <a href='/user/'>User Form</a>
+            </div>
+
+        </body>
+        </html>
     """)
+
 
 def about(request):
     return HttpResponse("<h1>Сторінка Про нас</h1>")
@@ -73,15 +124,49 @@ def product_add(request):
         name = request.POST.get("name")
         price = request.POST.get("price")
         description = request.POST.get("description")
+
+        login = request.POST.get("login")
+        email = request.POST.get("email")
+        birth_date_str = request.POST.get("birth_date")
         phone = request.POST.get("phone")
+        if ":" in login:
+            return render(request, "product_form.html", {
+                "error": "Логін не повинен містити символ ':'!"
+            })
+
+        if "@" not in email or "." not in email:
+            return render(request, "product_form.html", {
+                "error": "Некоректна e-mail адреса!"
+            })
+        try:
+            birth_date = date.fromisoformat(birth_date_str)
+        except:
+            return render(request, "product_form.html", {
+                "error": "Некоректна дата народження!"
+            })
+
+        if birth_date >= date.today():
+            return render(request, "product_form.html", {
+                "error": "Дата народження має бути у минулому!"
+            })
+
+        age = (date.today() - birth_date).days // 365
+        if age < 18:
+            return render(request, "product_form.html", {
+                "error": "Мінімальний вік — 18 років!"
+            })
         if len(phone) != 10 or not phone.isdigit():
             return render(request, "product_form.html", {
                 "error": "Телефон повинен містити рівно 10 цифр!"
             })
+
         return render(request, "product_success.html", {
             "name": name,
             "price": price,
             "description": description,
+            "login": login,
+            "email": email,
+            "birth_date": birth_date_str,
             "phone": phone,
         })
 
@@ -98,3 +183,12 @@ def delivery(request):
         form = DeliveryForm()
 
     return render(request, "delivery_form.html", {"form": form})
+
+def user_form(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            return HttpResponse("<h2>Форма успішно пройдена!</h2>")
+    else:
+        form = UserForm()
+    return render(request, "user_form.html", {"form": form})

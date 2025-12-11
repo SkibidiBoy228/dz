@@ -1,5 +1,5 @@
 from django import forms
-from datetime import date, datetime, time, timedelta
+from datetime import date
 
 
 class DeliveryForm(forms.Form):
@@ -43,3 +43,42 @@ class DeliveryForm(forms.Form):
                     self.add_error(field, "Повинно починатися з великої літери!")
 
         return cleaned
+    
+
+class UserForm(forms.Form):
+        login = forms.CharField(label="Логін", max_length=50)
+        email = forms.EmailField(label="Е-пошта")
+        phone = forms.CharField(label="Телефон", max_length=20)
+        birth_date = forms.DateField(label="Дата народження", required=False)
+
+        MIN_AGE = 18
+
+        def clean_login(self):
+            login = self.cleaned_data['login']
+            if ":" in login:
+                raise forms.ValidationError("Логін не повинен містити символ ':'")
+            return login
+
+        def clean_phone(self):
+            phone = self.cleaned_data['phone']
+            digits = ''.join(c for c in phone if c.isdigit())
+
+            if len(digits) < 10:
+                raise forms.ValidationError("Телефон повинен містити щонайменше 10 цифр.")
+
+            return phone
+
+        def clean_birth_date(self):
+            bd = self.cleaned_data.get('birth_date')
+
+            if bd is None:
+                return bd
+
+            if bd >= date.today():
+                raise forms.ValidationError("Дата народження має бути у минулому!")
+
+            age = (date.today() - bd).days // 365
+            if age < self.MIN_AGE:
+                raise forms.ValidationError(f"Мінімальний вік — {self.MIN_AGE} років.")
+
+            return bd
