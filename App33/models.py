@@ -1,6 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class AccessLog(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Користувач",
+        related_name="access_logs"
+    )
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата та час доступу")
     status = models.IntegerField(verbose_name="Статус відповіді сервера")
 
