@@ -188,7 +188,8 @@ def user_form(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            return HttpResponse("<h2>Форма успішно пройдена!</h2>")
+            return render(request, "user_success.html", {"data": form.cleaned_data})
     else:
         form = UserForm()
+
     return render(request, "user_form.html", {"form": form})
