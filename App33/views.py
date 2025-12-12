@@ -7,7 +7,8 @@ from .forms import UserForm
 from django.http import HttpResponse
 import random
 from django.utils import timezone
-
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 # технічно представлення - це функції, які приймають
 # запит (request) та формують відповідь (response)
@@ -70,6 +71,7 @@ def home(request):
                 <a href='/product/add/'>Форма додавання товару</a>
                 <a href='/delivery/'>Доставка</a>
                 <a href='/user/'>User Form</a>
+                <a href='/seed-page/'>Seed</a>       
             </div>
 
         </body>
@@ -193,3 +195,27 @@ def user_form(request):
         form = UserForm()
 
     return render(request, "user_form.html", {"form": form})
+
+
+def seed_page(request):
+    return render(request, "seed_page.html")
+
+
+@csrf_exempt
+def seed(request):
+    if request.method != "PATCH":
+        return JsonResponse({"error": "PATCH required"}, status=405)
+
+    username = "guest"
+    password = "guest123"
+
+    user, created = User.objects.get_or_create(username=username)
+
+    if created:
+        user.set_password(password)
+        user.save()
+        return JsonResponse({"status": "created", "user": username})
+
+    user.set_password(password)
+    user.save()
+    return JsonResponse({"status": "updated", "user": username})

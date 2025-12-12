@@ -12,5 +12,7 @@ urlpatterns = [
     path('product/add/', views.product_add, name='product_add'),
     path('delivery/', views.delivery, name='delivery'),
     path("user/", views.user_form),
+    path("seed-page/", views.seed_page, name="seed_page"),
+    path("seed/", views.seed, name="seed"),
 
 ]
