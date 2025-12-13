@@ -46,3 +46,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const loginModalEl = document.getElementById("loginModal");
+
+    if (loginModalEl && loginModalEl.dataset.show === "true") {
+        const loginModal = new bootstrap.Modal(loginModalEl);
+        loginModal.show();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const registerModalEl = document.getElementById("registerModal");
+
+    if (registerModalEl && registerModalEl.dataset.show === "true") {
+        const registerModal = new bootstrap.Modal(registerModalEl);
+        registerModal.show();
+    }
+});

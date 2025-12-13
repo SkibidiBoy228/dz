@@ -1,15 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import json
 from .forms import DeliveryForm
 from .forms import UserForm
+from .models import Profile
+
 # Create your views here.
 from django.http import HttpResponse
 import random
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-
+from django.contrib.auth import authenticate, login
+from django.db import models
+from django.contrib.auth.decorators import login_required
 # технічно представлення - це функції, які приймають
 # запит (request) та формують відповідь (response)
 def hello(request) :
@@ -17,66 +21,7 @@ def hello(request) :
 
 
 def home(request):
-    return HttpResponse("""
-        <!DOCTYPE html>
-        <html lang='uk'>
-        <head>
-            <meta charset='UTF-8'>
-            <title>Головна</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background: #f4f6f9;
-                    padding: 40px;
-                }
-                .container {
-                    max-width: 500px;
-                    margin: auto;
-                    background: white;
-                    padding: 30px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-                    text-align: center;
-                }
-                h1 {
-                    margin-bottom: 25px;
-                    color: #333;
-                }
-                a {
-                    display: block;
-                    margin: 10px 0;
-                    padding: 12px;
-                    background: #4a90e2;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 8px;
-                    font-size: 17px;
-                    transition: 0.3s;
-                }
-                a:hover {
-                    background: #357abd;
-                }
-            </style>
-        </head>
-        <body>
-
-            <div class='container'>
-                <h1>Головна сторінка</h1>
-
-                <a href='/about'>Про нас</a>
-                <a href='/privacy'>Політика конфіденційності</a>
-                <a href='/lottery'>Лотерея 6 з 42</a>
-                <a href='/statics'>Статичні файли</a>
-                <a href='/http-help'>Посилання-підказки</a>
-                <a href='/product/add/'>Форма додавання товару</a>
-                <a href='/delivery/'>Доставка</a>
-                <a href='/user/'>User Form</a>
-                <a href='/seed-page/'>Seed</a>       
-            </div>
-
-        </body>
-        </html>
-    """)
+    return render(request, "home.html")
 
 
 def about(request):
@@ -219,3 +164,73 @@ def seed(request):
     user.set_password(password)
     user.save()
     return JsonResponse({"status": "updated", "user": username})
+
+def login_view(request):
+    context = {}
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user:
+            login(request, user)
+            return redirect("profile")
+
+        context["login_error"] = "Невірний логін або пароль"
+
+    return render(request, "base.html", context)
+
+
+
+def register_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        if password1 != password2:
+            return render(request, "base.html", {
+                "register_error": "Паролі не співпадають"
+            })
+
+        if User.objects.filter(username=username).exists():
+            return render(request, "base.html", {
+                "register_error": "Користувач вже існує"
+            })
+
+        if User.objects.filter(email=email).exists():
+            return render(request, "base.html", {
+                "register_error": "Email вже використовується"
+            })
+
+        if not phone or len(phone) != 10 or not phone.isdigit():
+            return render(request, "base.html", {
+                "register_error": "Телефон має містити рівно 10 цифр"
+            })
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password1
+        )
+        profile = user.profile
+        profile.phone = phone
+        profile.save()
+
+        login(request, user)
+        return redirect("profile")
+
+    return redirect("/")
+
+
+@login_required
+def profile_view(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    return render(request, "profile.html", {
+        "profile": profile
+    })

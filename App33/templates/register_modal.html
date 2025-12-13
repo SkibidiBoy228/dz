@@ -1,0 +1,50 @@
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true"
+     data-show="{% if register_error %}true{% else %}false{% endif %}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Реєстрація</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                {% if register_error %}
+                <div class="alert alert-danger">
+                    {{ register_error }}
+                </div>
+                {% endif %}
+
+                <form method="POST" action="/register/">
+                    {% csrf_token %}
+
+                    <p>Логін:</p>
+                    <input type="text" name="username" class="form-control" required>
+
+                    <p class="mt-2">E-mail:</p>
+                    <input type="email" name="email" class="form-control" required>
+
+                    <p class="mt-2">Телефон:</p>
+                    <input type="text"
+                           name="phone"
+                           class="form-control"
+                           placeholder="0501234567"
+                           required>
+
+                    <p class="mt-2">Пароль:</p>
+                    <input type="password" name="password1" class="form-control" required>
+
+                    <p class="mt-2">Повторіть пароль:</p>
+                    <input type="password" name="password2" class="form-control" required>
+
+                    <button class="btn btn-success mt-3" type="submit">
+                        Зареєструватися
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>

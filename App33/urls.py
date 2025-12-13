@@ -1,4 +1,6 @@
 from django.urls import path
+from App33.views import login_view
+from .views import profile_view
 from . import views
 
 urlpatterns = [
@@ -14,5 +16,7 @@ urlpatterns = [
     path("user/", views.user_form),
     path("seed-page/", views.seed_page, name="seed_page"),
     path("seed/", views.seed, name="seed"),
-
+    path("login/", login_view, name="login"),
+    path("register/", views.register_view, name="register"),
+    path("profile/", profile_view, name="profile"),
 ]

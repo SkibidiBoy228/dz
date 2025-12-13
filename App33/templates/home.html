@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+<style>
+    .home-container {
+        max-width: 500px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    .home-container h1 {
+        margin-bottom: 25px;
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
+    .home-link {
+        display: block;
+        margin: 10px 0;
+        padding: 12px;
+        background: #4a90e2;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 17px;
+        transition: 0.3s;
+        font-family: Arial, sans-serif;
+    }
+    .home-link:hover {
+        background: #357abd;
+    }
+</style>
+
+<div class="home-container">
+    <h1>Головна сторінка</h1>
+
+    <a href="/about" class="home-link">Про нас</a>
+    <a href="/privacy" class="home-link">Політика конфіденційності</a>
+    <a href="/lottery" class="home-link">Лотерея 6 з 42</a>
+    <a href="/statics" class="home-link">Статичні файли</a>
+    <a href="/http-help" class="home-link">Посилання-підказки</a>
+    <a href="/product/add/" class="home-link">Форма додавання товару</a>
+    <a href="/delivery/" class="home-link">Доставка</a>
+    <a href="/user/" class="home-link">User Form</a>
+    <a href="/seed-page/" class="home-link">Seed</a>
+</div>
+{% endblock %}
